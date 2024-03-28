@@ -24,9 +24,11 @@ else ifeq ($(DEBUG),false)
 	CFLAGS+=-O3 -DNDEBUG
 endif
 
-all: $(NAME) $(SH_NAME)
+all: $(NAME)
 
 -include $(DEP)
+
+shared: $(SH_NAME)
 
 debug:
 	$(MAKE) --no-print-directory DEBUG=true
@@ -41,7 +43,7 @@ $(NAME): $(OBJ)
 	ar rcs $@ $^
 
 $(SH_NAME): $(OBJ)
-	$(CC) -shared -o $@ $^
+	$(CC) -shared -o $@ $^ -lm
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(@D)
